@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package wallet;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/wallet";
+
+enum ChainRecordStatus {
+    ChainRecordStatus_Invalid = 0; // 无效
+    Ready = 1;    // 未发币
+    Confirming = 2; // 链上确认中
+    Done = 3;     // 完成
+    Drop = 4;  // 发币失败
+    Lost = 5;   // 发币成功,找不到用户
+    Pending = 6; // 等待中，下一个状态是ready
+    Failure = 7 ; // 失败
+}
+
+enum ChainDirect {
+    ChainDirect_In = 0;  // 转入
+    ChainDirect_Out = 1; // 转出
+}
+
+enum TransferType {
+    TransferType_Invalid = 0;  // 无效
+    Issue = 1;  // 发币
+    ApplyIssue = 2; // 补合约申请发币
+    Ransomed =3;//回收
+    ContractFee=4;//手续费
+    Burn = 5; // 销币
+    Transfer = 6; //转账
+}
+
+enum ChainType {
+    ChainType_Invalid = 0;  // 无效
+    EOS = 1; // EOS
+    ETH = 2; // ETH
+}
+
+enum IssueType {
+    IssueType_Invalid = 0;  // 无效
+    NormalContract = 1; // 正规合约
+    ApplyContract = 2; // 申请补的合约
+}

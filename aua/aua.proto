@@ -1,0 +1,654 @@
+syntax = "proto3";
+
+package aua;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/aua";
+import "common/common.proto";
+import "aua/enum.proto";
+import "wallet/enum.proto";
+import "user/enum.proto";
+import "user/user.proto";
+
+
+service AUA {
+    // 申请列表
+    rpc PageApplication(PageApplicationReq) returns (PageApplicationRsp) {}
+    // PageDepositApplication
+    rpc PageDepositApplication(PageApplicationReq) returns (PageApplicationRsp) {}
+    // PageWithdrawApplication
+    rpc PageWithdrawApplication(PageApplicationReq) returns (PageApplicationRsp) {}
+    // 绑定/修改EOS
+    rpc BindEOSAccount(BindEOSAccountReq) returns (common.Empty) {}
+    // 获取账户数据
+    rpc GetAccount(GetAccountReq)returns (GetAccountRsp){}
+    // 发送申请数据
+    rpc SendApplyNumEmail(SendApplyNumReq) returns (common.Empty) {}
+    // 添加收据
+    rpc AddReceipt(AddReceiptReq) returns (AddReceiptRsp) {}
+    // 更新收据
+    rpc UpdateReceipt(UpdateReceiptReq) returns (AddReceiptRsp){}
+     // 申请发币
+    rpc ApplyIssue(ApplyIssueReq) returns (ApplyIssueRsp) {}
+    // 审核申请
+    rpc ReviewApplication(ReviewApplicationReq) returns (common.Empty) {}
+    // 审核申请
+    rpc ReviewDepositApplication(ReviewApplicationReq) returns (common.Empty) {}
+    // 审核申请
+    rpc ReviewWithdrawApplication(ReviewApplicationReq) returns (common.Empty) {}
+    // 合约列表
+    rpc PageContract(PageContractReq) returns (PageContractRsp) {}
+    // 获取合约详情
+    rpc GetContract(GetContractInfoReq) returns (GetContractInfoRsp) {}
+    // 收据列表
+    rpc PageReceipt(PageReceiptReq) returns (PageReceiptRsp) {}
+    // ApplyWithdraw
+    rpc ApplyWithdraw(ApplyWithdrawReq) returns (Application) {}
+    // 申请合约
+    rpc ApplyContract(ApplyContractReq) returns (Application) {}
+    // 申请兑换黄金
+    rpc ApplyExchangeGold(ApplyExchangeGoldReq) returns (Application) {}
+    // 申请赎回凭证
+    rpc ApplyRansom(ApplyRansomReq) returns (ApplyRansomRsp) {}
+    // 确认赎回凭证
+    rpc ConfirmRansomReceipt(ConfirmRansomReceiptReq) returns (Contract) {}
+    // 确认申请合约
+    rpc ConfirmApplyContract(ConfirmApplyContractReq) returns (ConfirmApplyContractRsp) {}
+    // 确认申请合约
+    rpc ConfirmExchangeGold(ConfirmExchangeGoldReq) returns (Contract) {}
+    // 转账进度
+    rpc GetTransferProgress(TransferProgressReq) returns (TransferProgressRsp) {}
+    // 合约申请列表
+    rpc PageApplyContract(PageApplyContractReq) returns (PageApplyContractRsp) {}
+    // 兑换黄金列表
+    rpc PageApplyExchangeGold(PageApplyExchangeGoldReq) returns (PageApplyExchangeGoldRsp) {}
+    // 确认交付
+    rpc ConfirmDelivery(ConfirmDeliveryReq) returns (common.Empty) {}
+    // 取消兑换黄金
+    rpc CancleExchangeGold(CancleExchangeGoldReq) returns (common.Empty) {}
+    // 取消兑换黄金
+    rpc CreateAndBindEOSAccount(CreateAndBindEOSAccountReq) returns (common.Empty) {}
+    // PageCurrency
+    rpc PageCurrency(PageCurrencyReq) returns (PageCurrencyRsp) {}
+    // PageBank
+    rpc PageBank(PageBankReq) returns (PageBankRsp) {}
+    // PageStore
+    rpc PageStore (PageStoreReq) returns (PageStoreRsp) {}
+    // CreateBank
+    rpc CreateBank(CreateBankReq) returns (Bank) {}
+    // CreateCurrency
+    rpc CreateCurrency(CreateCurrencyReq) returns (Currency) {}
+    // CreatStore
+    rpc CreateStore(CreateStoreReq) returns (Store) {}
+    // GetRebalancedRecord
+    rpc PageRebalancedRecord (PageRebalancedRecordRep) returns (PageRebalancedRecordRsp) {}
+    // GetAvailableIssueAmount
+    rpc GetAvailableIssueAmount(common.Empty) returns (GetAvailableIssueAmountRsp) {}
+    // ReviewedWithdrawAmount
+    rpc ReviewedWithdrawAmount(ReviewedWithdrawReq) returns (common.Empty) {}
+    // UpdateReceiptImages ...
+    rpc UpdateReceiptImages (UpdateReceiptImagesReq) returns (common.Empty) {}
+    // GetWithdrawableAmount ...
+    rpc GetWithdrawableAmount (common.Empty) returns (GetWithdrawableAmountRsp) {}
+  };
+  
+// 获取账号数据request
+message GetAccountReq{
+    uint64 UserID = 1 ;// 用户ID 选填
+}
+message GetAccountRsp{
+    uint64    UserID    = 1 ;  
+    uint64   IncomePer   = 2; //收益份额
+    uint64   ContractAmount   = 3;   //合约数量  
+    string   EOSAccount       = 4;  // EOS账号
+    uint64    IssueAmount    = 5;    // 发行数量
+    uint64  Earnings  = 6 ;// 收益到账
+    string Memo = 7;
+}
+
+// 申请发币返回
+message ApplyIssueRsp{
+    uint64 ApplicationID = 1;
+   uint64 ContractAmount                        = 2;//
+   string  ReceiptImg                       = 3;//收据图片
+   ApplicationStatus  ApplicationStatus     = 4;//申请状态
+   ApplicationType ApplicationType = 5;//申请类型
+   string  CreatedAt                       = 6 ;
+   string  UpdatedAt                        = 7 ;
+   string  Remark                           = 8 ;//
+   float  Rate                             = 9 ;
+   float  Amount                           = 10 ;
+}
+
+// 取消兑换黄金请求
+message CancleExchangeGoldReq{
+    uint64 ApplicationID                        = 1;
+ }
+
+//申请合约 
+message ApplyContractReq{
+    uint64 ContractAmount =1;//合约数量
+    uint64 MerchantID =2; //金商ID
+}
+
+//申请兑换黄金
+message ApplyExchangeGoldReq{
+    uint64 ContractAmount =1;//合约数量
+    uint64 MerchantID =2; //金商ID
+}
+
+// ApplyWithdraw
+message ApplyWithdrawReq {
+    ApplicationType ApplicationType = 1;
+    uint64 ApplicationAmount = 2;
+    string BankAccount = 3;
+    uint64 CurrencyID = 4;
+    string PickUpTime = 5;
+    uint64 StoreID = 6;
+}
+
+message UserShortInfo {
+    uint64 UserID = 1;//
+    string RealName = 2;//真实姓名
+}
+
+//合约申请列表 
+message PageApplyContractReq{
+    message Query{
+        uint64   ApplicationID = 1;//申请ID
+        uint64   ReceiptID = 2;//凭证ID
+        string   ClientName = 3;//客户姓名
+        ApplicationStatus ApplicationStatus = 4;//客户状态
+        string CreatedAt = 5;
+        string UpdateAt = 6;
+        uint64 ClientID = 7;//客户ID
+        ApplicationType ApplicationType = 8;//申请类型
+        uint64 MerchantID = 9;//金商
+     }
+     common.PageReq Page = 1;
+     Query Conditions = 2;
+}
+
+//兑换黄金申请列表 
+message PageApplyExchangeGoldReq{
+    message Query{
+        uint64   ApplicationID = 1;//申请ID
+        uint64   ReceiptID = 2;//凭证ID
+        string   ClientName = 3;//客户姓名
+        ApplicationStatus ApplicationStatus = 4;//客户状态
+        string CreatedAt = 5;
+        string UpdateAt = 6;
+        uint64 ClientID = 7;//客户ID
+        ApplicationType ApplicationType = 8;//申请类型
+        uint64 MerchantID = 9;//金商
+     }
+     common.PageReq Page = 1;
+     Query Conditions = 2;
+}
+
+message PageApplyContractRsp{
+    uint64 Count =  1;
+    repeated  Application Data = 2;
+
+}
+
+message PageApplyExchangeGoldRsp{
+    uint64 Count =  1;
+    repeated  Application Data = 2;
+
+}
+//申请赎回凭证 
+message ApplyRansomReq{
+    uint64 ContractID    =1; //合约ID
+}
+
+//确认 申请合约请求
+message ConfirmApplyContractReq{
+    uint64 ReceiptID =1;//凭证ID
+}
+
+//确认兑换黄金请求
+message ConfirmExchangeGoldReq{
+    uint64 ApplicationID =1;//申请ID
+}
+
+//确认赎回凭证请求 
+message ConfirmRansomReceiptReq{
+    uint64 ContractID =1; //合约ID
+}
+
+//确认交付
+message ConfirmDeliveryReq{
+    uint64 ContractID =1; //合约ID
+}
+
+
+//转账进度
+message TransferProgressReq{
+    wallet.TransferType TransferType = 1; //转账类型
+    uint64 ReceiptID = 2;  //凭证ID
+    ProgressType ProgressType = 3; //进度类型
+}
+
+//ApplyRansomRsp
+message ApplyRansomRsp{
+    string Memo = 1; //memo
+    uint64 TransferAmount = 2;  //转账数量
+    string Account = 3; //账号
+}
+
+//ApplyContractRsp
+message ApplyContractRsp{
+    string Memo = 1; //memo
+    uint64 TransferAmount = 2;  //转账数量
+    string Account = 3; //账号
+    string MerchantName = 4; //金商
+}
+
+//ConfirmApplyContractRsp
+message ConfirmApplyContractRsp{
+    uint64 FeeAmount = 1; //手续费
+    uint64 TransferedFeeAmount = 2; //已转手续费
+}
+
+//申请收据
+message AddReceiptReq{
+    uint64 ApplicationID = 1;
+    // repeated string ReceiptImgs = 2;
+    string ReceiptImg = 2;
+    repeated string ReceiptImgs = 3;
+    // uint64 ClientID = 1; //客户ID
+    // uint64 MerchantID = 2; // 金商ID 必填 
+    // string ClientEmail = 3; //必填
+    // repeated string ReceiptImgs = 4;// 必填
+    // uint64 ContractAmount = 5; //发行数量 必填 > 100 
+    // string Remark = 6; //备注
+}
+
+//申请收据
+message AddReceiptRsp{
+    uint64 ClientID = 1;//客户ID
+    repeated string ReceiptImgs = 2;//凭证影像
+    uint64 ContractAmount = 3;//合约真实数量
+    string ClientEmail = 4;//客户邮箱
+    string Remark = 5;//备注
+}
+
+message UpdateReceiptReq{
+    uint64 ReceiptID = 1; // 
+    repeated string ReceiptImgs = 2;
+    uint64 ClientID = 3; //用户
+    uint64 MerchantID = 4; // 金商ID 必填 
+    string ClientEmail = 5; //必填
+    uint64 ContractAmount = 6; //发行数量 必填 > 100 
+    string Remark = 7; 
+}
+
+
+//申请发币
+message ApplyIssueReq {
+    uint64 Quantity = 1;
+    uint64 CurrencyID = 2;
+    uint64 BankID = 3;
+    string ReceiptImg = 4;
+    string Remark = 5;
+    repeated string ReceiptImgs = 6;
+
+    // deprecated 
+    uint64 MerchantID = 7;
+    float Rate = 8;
+    string Currency = 9;
+    string Bank = 10;
+}
+
+  //申请列表
+message PageApplicationReq{
+     message Query{
+        uint64   ApplicationID = 1;//申请ID
+        string   ClientName = 2;//客户姓名
+        uint64   ContractID = 3;//合约ID
+        uint64   ClientID = 4; //客户ID
+        repeated string  CreatedAt = 5;//
+        ApplicationStatus ApplicationStatus = 6;//申请状态
+        ApplicationType ApplicationType = 7;//申请类型
+        string OrderBy = 8;
+        string Direction = 9;
+     }
+     common.PageReq Page = 1;
+     Query Conditions = 2;
+}
+  
+message PageApplicationRsp{
+    uint64 Count =  1;
+    repeated  Application Data = 2;
+  
+}
+
+//修改 EOS 账号
+message UpdateEOSAccountReq{
+    string EOSAddress = 1;//必填
+    string VerifyCode = 2 ;//必填
+}
+
+//绑定 EOS 账号
+message BindEOSAccountReq{
+    string EOSAddress = 1;//必填 
+    string VerifyCode = 2 ;//必填
+    user.ContactType Type = 3 ;//验证类型
+    string Memo = 4;
+}
+
+//发送电子凭证码到客户邮箱
+message SendApplyNumReq{
+    uint64 ReceiptID = 1; //电子凭证
+    string ClientEmail =2 ;//客户邮件地址
+}
+
+
+
+//审核
+message ReviewApplicationReq{
+    message Gold {
+        uint64 GoldID = 1;
+        string Name = 2;
+        string SerialNumber = 3;
+        float Weight = 4;
+    }
+    uint64 ApplicationID = 1; //必填
+    ApplicationStatus ApplicationStatus = 2;  // 必填
+    string Remark = 3 ; //备注
+    string SignedTransaction= 4 ;//签名
+    repeated string ReceiptImgs = 5;
+    repeated string GoldSerialNumbers = 6;
+    repeated Gold GoldInput = 7;
+}
+
+
+//合约列表
+message PageContractReq {
+    message Query {
+        uint64 ContractID =  1;//合约ID
+        repeated   ContractStatus InContractStatus = 2;//合约状态
+        string CreatedAt = 3;//
+        uint64 ClientID = 4;//客户ID
+        uint64 MerchantID = 5; //金商ID
+        repeated  IncomeStatus InIncomeStatus = 6;//收益状态
+        string  ClientName = 7;//持有人
+        ContractStatus ContractStatus = 8;//合约状态
+        IncomeStatus IncomeStatus = 9;//收益状态
+        string  MerchantName = 10;//金商
+    }
+    common.PageReq Page = 1;
+    Query Conditions = 2;
+    bool Report = 3;
+}
+
+//合约列表返回
+message PageContractRsp{
+    uint64 Count =  1;
+    repeated  Contract Data = 2;
+    string ReportUrl = 3;
+}
+
+message GetContractInfoReq{
+    uint64 ContractID = 1; //必填
+    uint64 UserID = 2; 
+}
+
+message GetContractInfoRsp{
+    Contract Contract = 1;
+}
+
+
+//收据列表
+// TODO :ZP update Query 
+message PageReceiptReq {
+    message Query {
+        uint64 ClientID =1 ;//客户ID
+        uint64 ReceiptID = 2;//凭证iD
+        string ClientName = 3;//客户姓名
+        uint64 MerchantID = 4; //金商ID
+        ReceiptType ReceiptType = 5;//凭证类型
+        string ClientEmail = 6;//客户邮箱
+
+
+    }
+    common.PageReq Page = 1;
+    Query Conditions = 2;
+}
+
+message PageReceiptRsp{
+    uint64 Count =  1;
+    repeated  Receipt Data = 2;
+}
+
+//申请
+message Application {
+    uint64 ApplicationID = 1 ;//申请ID
+    uint64 ClientID                        = 2;//客户ID
+    uint64 ContractAmount                        = 3;//真实合约数量
+     uint64 ContractID =4;//合约ID
+     uint64 ReceiptID =5;//凭证ID
+    uint64  MerchantID                       = 6 ;//金商ID
+    uint64  ReviewerID                         = 7;//审核人员
+    ApplicationStatus  ApplicationStatus     = 8;//申请状态
+    ApplicationType ApplicationType = 9;//申请类型
+    string  CreatedAt                       = 10 ;
+    string  UpdatedAt                        = 11 ;
+    string  Remark                           = 12 ;//备注
+    string  Memo                           = 13 ;//memo
+    Receipt Receipt = 14;//凭证信息 
+    UserShortInfo Merchant = 15;//金商信息
+    ClientIdentify ClientIdentify = 16;//客户信息
+    string Account = 17;//转账账号
+    string PassedAt=18;//通过时间
+    string ReceiptImg=19;//凭证img
+    Contract Contract = 20 ;//合约信息
+    ReceiptAddress Address = 21;//提取地址
+    repeated string ReceiptImgs=22;//凭证imgs
+    uint64 Quantity = 23;
+    string Currency = 24;
+    string Bank = 25;
+    float Rate = 26;
+    float Amount = 27;
+    string ExpiredAt = 28;
+    Store Store = 29;
+    string PickupAt = 30;
+    repeated string GoldSerialNumbers = 31;
+    repeated user.UserBank Banks = 32;
+}
+
+//收据
+message Receipt{
+    uint64 ReceiptID = 1; //金商ID
+    uint64 ContractAmount = 2;  //合约
+    repeated string ReceiptImgs = 3; //抵押物photo
+    string ClientEmail = 4; //客户邮箱
+    uint64 MerchantID = 5 ; //金商ID
+    ReceiptStatus ReceiptStatus = 6; //凭证状态
+    string CreatedAt = 7; 
+    string UpdatedAt = 8; 
+    Contract Contract = 9;// 合约信息
+    uint64  FeeAmount   = 10 ;//应转手续费
+    uint64 ReceivedAmount  =11;// 已接收数量(提取数量)
+    UserShortInfo Merchant = 12 ; //金商
+    uint64 RefundedAmount = 13; //已退款数量
+    ReceiptType ReceiptType = 14 ;//凭证类型
+}
+
+//转账进度
+message TransferProgressRsp{
+    uint64 TransferAmount = 1; //应转量
+    uint64 ProgressAmount = 2;  //已转量
+    string memo = 3; //memo
+}
+
+//合约
+message Contract{
+    uint64 ContractID = 1; //合约编号
+    string ClientName = 2;// 持有人
+    uint64 IssueAmount = 3;//发行数量
+    uint64 ContractAmount = 4;//合约真实数量
+    uint64 IncomePer = 5;//收益份额
+    ContractStatus ContractStatus = 6;//合约状态
+    uint64 RansomAmount =7;//提取黄金已转账数量
+    uint64 ReceiptID =8;//凭证ID
+    uint64 ApplicationID = 9;//申请ID
+    string CreatedAt = 10;//
+    string UpdatedAt = 11;//
+    string ExpiredAt = 12;//过期时间
+    string EffectivedAt = 13;//生效时间
+    string Remark = 14;//备注
+    UserShortInfo Merchant = 15;//提取金商
+    ReceiptAddress Address = 16;//提取地址
+    string ExtractNum    =17;  // 提取编号
+    string ExtractExpireAt =18;// 可提取日期
+    string DeliveredAt    =19;//  交付时间
+    ClientIdentify ClientIdentify = 20;//提取人
+    IncomeStatus IncomeStatus = 21;//收益状态
+    uint64 ExtractAmount    =22;  // 提取数量
+    uint64 Earnings = 23 ;//收益到账
+    Receipt Receipt = 24;//凭证信息 
+    string WithdrawalAt =  25 ;//提取申请时间
+    string Account = 26;//转账账号
+    uint64 Profit = 27;//收益
+}
+
+message ReceiptAddress{
+    string	Mobile   =1;  //手机号
+    string	Area     =2;  // 所在区域
+    string	Address  =3;  // 详细地址
+}
+
+//客户实名信息
+message ClientIdentify{
+    string IdentifyName=1;//真实姓名
+    string IdentifyCode=2;//实名证件号码
+}
+
+// 创建并绑定eos账号
+message CreateAndBindEOSAccountReq {
+    string EOSAddress = 1;
+    string PublicKey = 2;
+    string VerifyCode = 3;
+    user.ContactType Type = 4 ;//验证类型
+
+}
+
+message PageCurrencyRsp {
+    uint64 Count = 1;
+    repeated Currency Data = 2;
+}
+
+message PageCurrencyReq {
+    message Query {}
+    common.PageReq Page = 1;
+    Query Conditions = 2;
+}
+
+message Currency {
+    uint64 CurrencyID = 1;
+    string Currency = 2;
+    float DepositRate = 3;
+    float WithdrawRate = 4;
+    string Symbol = 5;
+}
+
+message PageBankReq {
+    message Query {
+        uint64 CurrencyID = 1;
+    }
+    common.PageReq Page = 1;
+    Query Conditions = 2;
+}
+
+message PageBankRsp {
+    uint64 Count = 1;
+    repeated Bank Data = 2;
+}
+
+message Bank {
+    uint64 BankID = 1;
+    string BankName = 2;
+    string BankNumber = 3;
+    uint64 CurrencyID = 4;
+}
+
+message CreateCurrencyReq {
+    string Currency = 1;
+    float DepositRate = 2;
+    float WithDrawRate = 3;
+}
+
+message CreateBankReq {
+    uint64  CurrencyID = 1;
+    string BankName = 2;
+    string BankNumber = 3;
+}
+
+message Store {
+    uint64 StoreID = 1;
+    string Name = 2;
+    string Location = 3;
+    string Contact = 4;
+    string CreatedAt = 5;
+    string UpdatedAt = 6;
+}
+
+message CreateStoreReq {
+    string Name = 1;
+    string Location = 2;
+    string Contact = 3;
+}
+
+message PageStoreReq {
+    message Query {
+        uint64 StoreID = 1;
+    }
+    common.PageReq Page = 1;
+    Query Conditions = 2;
+}
+
+message PageStoreRsp {
+    uint64 Count = 1;
+    repeated Store Data = 2;
+}
+
+message GoldRecord {
+    string EOSAccount = 1;
+    string SerialNumber = 2;
+    string TotalWeight = 3;
+    string OwnedWeight = 4;
+    string GoldName = 5;
+}
+
+message PageRebalancedRecordRsp {
+    uint64 Count = 1;
+    repeated GoldRecord Data = 2;
+}
+
+message PageRebalancedRecordRep {
+    message Query {
+        string EOSAddress = 1;
+    }
+    common.PageReq Page = 1;
+    Query Conditions = 2;
+}
+
+message GetAvailableIssueAmountRsp {
+    uint64 Amount = 1;
+    uint64 IssuedAmount = 2;
+    uint64 TotalAmount = 3;
+}
+
+message ReviewedWithdrawReq {
+    uint64 id = 1;
+}
+
+message UpdateReceiptImagesReq {
+    uint64 UserID = 1;
+    uint64 ReceiptID = 2;
+    repeated string ReceiptImgs = 3;
+}
+
+message GetWithdrawableAmountRsp {
+    uint64 Amount = 1;
+}

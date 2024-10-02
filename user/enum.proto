@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package user;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/user";
+
+// 联系类型
+enum ContactType {
+   LoginType_Invalid = 0; // 无效
+   Mobile = 1; // 手机
+   Email = 2; // 邮箱
+   UserName = 3;    // 用户名
+};
+
+// 用户状态
+enum UserStatus {
+   UserStatus_Invalid = 0; // 无效
+   Normal = 1; // 正常
+   ForbitLogin = 2; // 禁止登录
+};
+
+// 通知状态
+enum NotificationStatus {
+   NotificationStatus_Invalid = 0;// 无效
+   SendSuccess = 1 ;// 发送成功
+   SendFailure = 2 ;// 发送失败
+   SendWaiting = 3 ; // 等待发送
+   IsSending = 4; //发送中 
+
+};
+
+//通知类型
+enum NotificationType{
+   NotificationType_Invalid = 0 ;//无效
+   NotificationType_SMS = 1;//短信
+   NotificationType_Email = 2;//邮件
+}
+
+// 在线状态
+enum OnlineStatus {
+   OnlineStatus_Invalid = 0; // 无效
+   Logon = 1; // 登录
+   Logout = 2; // 未登录
+};
+
+enum ReceiptAddressType {
+   ReceiptAddressType_Invalid = 0 ; //无效
+   AddAddress = 1;//添加地址
+   ChangeAddress = 2; //修改地址
+}
+
+// 实名状态
+enum IdentifyStatus {
+   IdentifyStatus_Invalid = 0; // 无效
+   Identifying = 1; // 审核中
+   PassIdentify = 2; // 审核通过
+   IdentifyFail = 3; //审核失败
+   NoIdentify = 4; // 未审核
+   OnProcess = 5;  
+};
+
+// 实名类型
+enum IdentifyType {
+   IdentifyType_Invalid = 0; // 无效
+   IDCard = 1; // 身份证
+   Company = 2; // 公司
+   Passport = 3; // 护照
+   Organization = 4; // 機構
+};
+
+enum UserBankStatus {
+    Bank_Invalid = 0;
+    Bank_Pending = 1;
+    Bank_Active = 2;
+    Bank_Inactive = 3;
+};
+
+// 验证码类型
+enum VerifyCodeType {
+  VerifyCodeType_Invalid = 0; // 无效
+  Regist = 1;
+  Login = 2;
+  ResetPassword = 3;
+  ChangePassword = 4;
+  UnbindMobile = 5;
+  BindMobile = 6;
+  UnbindEmail = 7;
+  BindEmail = 8;
+  ChangeTradePassword=9;
+  ChangeNickName = 10;
+  BindPayment = 11;
+  DeletePayment = 12;
+  BindEOSAccount = 13;
+  CRMLogin = 14;
+}
+
+// 验证码状态
+enum VerifyCodeStatus {
+    VerifyCode_Invalid = 0;
+  	VerifyCodeNotUse = 1;
+	  VerifyCodeUsed   = 2;
+}
+
+// 支付方式类型
+enum PaymentType {
+  PaymentType_Invalid = 0; // 无效
+  Bankcard = 1;
+  AliPay = 2;
+  Wechat = 3;
+}
+
+// 通用状态
+enum NormalStatus {
+  NormalStatus_Invalid = 0;
+  Enable = 1;
+  Disable = 2;
+}
+
+// 通知type
+enum NotificationByType{
+   NotificationByType_Invalid = 0 ;//无效
+   Receipt = 1 ;//凭证
+   IssueApply = 2 ; //发币申请成功
+   BindEOS = 3 ;//绑定EOS短信
+   IssuePass = 4 ;//发币申请通过
+   IssueReject = 5 ;//发币申请驳回短信
+   IssueSuccess = 6;//发币成功通知短信
+   ContractApply = 7;//合约申请
+   Extract   = 8;//提货凭证短信
+   RegistSMSVerifyCode = 9;//注册短信验证码
+   RegistEmailVerifyCode = 10;//注册邮件验证码
+   RegistSMSSuccess = 11;//注册成功短信
+   RegistEmailSuccess = 12;//注册成功邮件
+   BindMobileSMSVerifyCode = 13;//绑定手机验证码
+   BindEmailEmailVerifyCode = 14;//绑定邮箱验证码
+   ModifyPassWordSMSVerifyCode = 15;//修改密码验证码短信
+   ModifyPassWordEmailVerifyCode = 16;//修改密码验证码邮件
+   FindTradePasswordSMSVerifyCode = 17;//修改找回交易密码短信
+   FindTradePasswordEmailVerifyCode = 18;//修改找回交易密码邮件
+   SetTradePasswordSMS = 19;//设置交易密码短信
+   BindEOSEmail = 20;//绑定EOS邮件
+   IssuePassEmail = 21;//发币通过邮件
+   IssueRejectEmail = 22 ;//发币申请失败邮件
+   ExtractEmail = 23;//提货凭证邮件
+   IssueNotification = 24; //通知管理员
+   OtherTemplete   = 25 ; //其他类型
+   IdentifyApplySMS = 26;
+   IdentifyApplyEmail = 27;
+   IdentifyPassSMS = 28 ;//实名认证通过短信
+   IdentifyPassEmail = 29 ;//实名认证通过邮件
+   IssueTokenSMS = 30;
+   IssueTokenEmail = 31;
+   ReceiveTokenSMS = 32;
+   ReceiveTokenEmail = 33;
+   WithdrawToBankSMS = 34;
+   WithdrawToBankEmail = 35;
+   ReceiveTokenSettlementEmail = 36;
+}

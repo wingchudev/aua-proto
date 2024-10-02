@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package rights;
+
+option go_package = "gitlab.bull-b.com/aua/aua-proto/rights";
+
+// 策略
+enum Procy {
+    // 所有用户可以访问
+    Public = 0;
+
+    // UserID属于自己,或者拥有Right
+    Protect = 1;
+
+    // 只有拥有Right
+    Private = 2;
+
+    // 系统接口
+    System = 3;
+};
+
+//状态
+enum Rights {
+    //无权限
+    None = 0;
+    // User 2000 - 2999
+    PageUser = 2000; // 查看用户列表
+    GetUserInfo = 2001; // 查看用户信息
+    ChangeUserStatus = 2002; // 修改用户状态
+    ChangeUserType = 2003; // 修改用户类型
+    ChangeUserRole = 2004; // 修改用户角色
+    UpdatePassword = 2005; // 修改密码
+    UpdateTradePassword = 2006; // 修改用户简介
+    UpdateUserBrief = 2007; // 修改用户简介
+    UpdateIdentify = 2008; // 修改用户实名
+    PageIdentify = 2009; // 查看用户实名
+    CreateRole = 2010;  // 创建角色
+    CreateUser = 2011;  // 创建用户
+    UpdateRole = 2012;  // 更新角色
+    PageVerifyCode = 2013; // 查看验证码
+    PageRole = 2014; // 查看角色
+    DeleteRole = 2015; // 刪除角色
+    UpdateUser = 2016;
+    UpdateAdmin = 2017;
+    UpdateIdentifyDocuemtns = 2018;
+
+
+    // AUA 3000 - 4000
+    BindEOSAccount = 3011;//绑定EOS账号
+    AddReceipt = 4001;// 创建收据
+    PageReceipt = 4002 ;// 收据权限
+    ReviewApplication = 4003;//审核申请
+    PageContract = 4004 ;//查看合约列表
+    ChangeContract = 4005 ;//更改合约
+    CreateContract = 4006;//创建合约
+    ConfirmApplyContract = 4007;//确认申请合约
+    ApplyRansom = 4008;//申请赎回
+    ConfirmRansomReceipt = 4009;//确认赎回凭证（交割）
+    GetTransferProgress = 4010;//获取进度
+    PageApplication = 4012;// 申请列表
+    UpdateEOSAccount = 4013;//更改EOS地址
+    GetAccount = 4014 ;// 获取账户信息
+    SendApplyNumEmail =  4015 ;// 发送验证码
+    PageApplyContract = 4016 ;//申请空合约列表
+    GetContract = 4017 ;//获取合约详情
+    PageConfirmExchangeGold = 4018 ;//兑换黄金列表
+    CancelExchangeGold = 4019; // 查看验证码
+    PageDepositApplication = 4020;
+    PageWithdarwApplication = 4021;
+    ReviewDepositApplication = 4022;
+    ReviewWithdrawApplication = 4023;
+    ReviewedWithdrawAmount = 4024;
+    UpdateReceiptImages = 4025;
+    
+    // Wallet 5000
+    UpdateChainRecord = 5001;
+    PageChainRecord = 5002;
+    SignIssueChainRecord = 5003;
+    SignRetireChainRecord = 5004;
+    PageIssueChainRecord = 5005;
+    PageRetireChainRecord = 5006;
+    // CMS 9000 - 10000
+    CreateArticle = 9001; //创建文章
+    UpdateArticle = 9002; // 更新文章
+    DeleteArticle = 9003; // 删除文昌
+    CreateCategory = 9004; // 创建类别
+    UpdateCategory = 9005; // 更新类别
+    DeleteCategory = 9006; // 删除类别
+    CreateBanner = 9007; // 创建banner
+    UpdateBanner = 9008; // 更新banner
+    DeleteBanner = 9009; // 删除banner
+    CreateNotice = 9010; //创建公告
+    UpdateNotice = 9011; // 更新公告
+    DeleteNotice = 9012; // 删除公告
+    PageAPILog = 9013; // 日志管理
+    CreateCurrency = 9014; // 創建貨幣
+    UpdateCurrency = 9015; // 更新貨幣
+    DeleteCurrency = 9016; // 刪除貨幣
+    CreateBank = 9017; // 創建銀行 
+    UpdateBank = 9018; // 更新銀行
+    DeleteBank = 9019; // 刪除銀行
+    CreateStore = 9020; // 創建店舖
+    UpdateStore = 9021; // 更新店舖
+    DeleteStore = 9022; // 刪除店舖
+    CreateVault = 9023; // 創建金庫
+    UpdateVault = 9024; // 更新金庫
+    DeleteVault = 9025; // 刪除金庫
+    CreateGold = 9026; // 創建金條
+    UpdateGold = 9027; // 更新金條
+    DeleteGold = 9028; // 刪除金條
+    UpdateBankCard = 9029; //審核用戶銀行卡
+    PageBankCard = 9030; //審核用戶銀行卡
+
+
+    // 頁面權限 10000 - 11000
+    UserManagement = 10000; // 用戶查詢/管理
+    UserIdentification = 10001; // 用戶實名認證
+    DepositApplication = 10002; // 發幣申請
+    WithdrawApplication = 10003; // 提起申請
+    AssetManagement = 10004; // 資產管理
+    CurrencyManagement = 10005; // 貨幣管理
+    BankManagement = 10006; // 銀行管理
+    StoreManagement = 10007; // 店舖管理
+    GoldManagement = 10008; // 黃金管理
+    VaultManagement = 10009; // 金庫管理
+    AccountManagement = 10010; //帳號管理
+    RoleManagement = 10011; // 角色管理
+    SystemLog = 10012; // 系統日誌 
+    VerificationCodePage = 10013; // 驗證碼
+    IssueToken = 10014;
+    RetireToken = 10015;
+
+};

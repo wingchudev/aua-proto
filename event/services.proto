@@ -1,0 +1,40 @@
+
+syntax = "proto3";
+
+package event;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/event";
+import "common/common.proto";
+
+service State {
+  //  gateway login
+  rpc Login(LoginReq) returns (common.Empty) {}
+  //  gateway User connect
+  rpc Connect(Session) returns (ConnectRsp) {}
+  //  gateway connect
+  rpc GWStart(GWInfo) returns (common.Empty) {}
+  //  gateway disconnect
+  rpc GWShutdown(GWInfo) returns (common.Empty) {}
+};
+
+message LoginReq {
+    uint64 UserID = 1;
+    string CookieID = 2;
+    string SessionID = 3;
+    string Gateway = 4;
+    string SessionUser = 5;
+}
+
+message Session {
+    string CookieID = 1;
+    string SessionID = 2;
+    string Gateway = 3;
+    uint64 UserID = 4;
+}
+
+message GWInfo {
+    string Gateway = 1;
+}
+
+message ConnectRsp {
+    string SessionUser = 1;
+}

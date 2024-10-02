@@ -1,0 +1,734 @@
+syntax = "proto3";
+
+package user;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/user";
+
+import "common/common.proto";
+import "rights/rights.proto";
+import "user/enum.proto";
+
+
+service User {
+  // 登录
+  rpc Login(LoginReq) returns (LoginRsp) {}
+  // 角色
+  rpc PageRole(RoleReq) returns(RoleRsp){}
+  // 注册
+  rpc Regist(RegistReq) returns (RegisterRsp) {}
+  // 获取用户信息
+  rpc GetUserInfo(GetUserInfoReq) returns (UserInfo) {}
+  // 獲取後台用戶權限
+  rpc GetUserRight(common.Empty) returns (GetUserRightRsp) {}
+  // 重置密码
+  rpc ResetPassword(ResetPasswordReq) returns (common.Empty) {}
+  // 修改密码
+  rpc ChangePassword(ChangePasswordReq) returns (common.Empty) {}
+  // 设置交易密码
+  rpc SetTradePassword(SetTradePasswordReq) returns (common.Empty) {}
+  // 修改交易密码
+  rpc ChangeTradePassword(ChangeTradePasswordReq) returns (common.Empty) {}
+  // 修改手机号
+  rpc ChangeMobile(ChangeMobileReq) returns (common.Empty) {}
+  // 绑定手机号
+  rpc BindMobile(BindMobileReq) returns (common.Empty) {}
+  // 修改邮箱
+  rpc ChangeEmail(ChangeEmailReq) returns (common.Empty) {}
+  // 绑定邮箱
+  rpc BindEmail(BindEmailReq) returns (common.Empty) {}
+  // 修改昵称
+  rpc ChangeNickName(ChangeNickNameReq) returns (common.Empty) {}
+  //  修改头像
+  rpc ChangeIcon(ChangeIconReq) returns (common.Empty) {}
+  // 个人实名制
+  rpc Identify(IdentifyReq) returns (common.Empty) {}
+  rpc UpdateIdentifyRemark(UpdateIdentifyRemarkReq) returns (common.Empty) {}
+  rpc GetIdentify(common.Empty) returns (GetIdentifyRsp) {}
+  // 检查用户是否存在
+  rpc CheckUserExist(CheckUserReq) returns (common.Empty) {}
+  //  获取图形验证码
+  rpc GetRecaptchaKey(common.Empty) returns (GetRecaptchaKeyRsp) {}
+  //  发送验证码
+  rpc SendVerifyCode(SendVerifyCodeReq) returns (SendVerifyCodeRsp) {}
+  // 检查验证码
+  rpc CheckVerifyCode(CheckVerifyCodeReq) returns (common.Empty) {}
+  // 获取国家码
+  rpc GetCountryCode(common.Empty) returns (GetCountryCodeRsp) {}
+  // 獲取國籍列表
+  rpc GetNationalityList(common.Empty) returns (GetCountryCodeRsp) {}
+  // 查看用户列表
+  rpc PageUser(PageUserReq) returns (PageUserRsp) {}
+  // UserReport
+  rpc UserReport(UserReportReq) returns (UserReportRsp) {}
+  // 查看金商列表
+  rpc PageMerchant(PageMerchantReq) returns (PageUserRsp) {}
+  // 修改用户状态
+  rpc ChangeUserStatus(ChangeUserStatusReq) returns (common.Empty) {}
+  // 修改用户类型
+  rpc ChangeUserType(ChangeUserTypeReq) returns (common.Empty) {}
+  // 修改用户角色
+  rpc ChangeUserRole(ChangeUserRoleReq) returns (common.Empty) {}
+  // 查看用户实名
+  rpc PageIdentify(PageIdentifyReq) returns (PageIdentifyRsp) {}
+  // 修改实名状态
+  rpc UpdateIdentify(UpdateIdentifyReq) returns (common.Empty) {}
+  // 创建后台用户
+  rpc CreateUser(CreateUserReq) returns (common.Empty) {}
+  // 创建角色
+  rpc CreateRole(CreateRoleReq) returns (common.Empty) {}
+  // 刪除角色
+  rpc DeleteRole(common.IDs) returns (common.Empty) {}
+  // 修改角色
+  rpc UpdateRole(UpdateRoleReq) returns (common.Empty) {}
+  // 修改用户简介
+  rpc UpdateUserBrief(UpdateUserBriefReq) returns (common.Empty) {}
+  // 修改用户简介
+  rpc UpdateUser(UpdateUserBriefReq) returns (common.Empty) {}
+  // 修改用户简介
+  rpc UpdateAdmin(UpdateUserBriefReq) returns (common.Empty) {}
+  // 修改用户密码
+  rpc UpdateUserPassword(UpdateUserPasswordReq) returns (common.Empty) {}
+  // 修改用户交易密码
+  rpc UpdateUserTradePassword(UpdateUserTradePasswordReq) returns (common.Empty) {}
+  // 登出
+  rpc Logout(common.Empty) returns (common.Empty) {}
+  // 查看验证码
+  rpc PageVerifyCode(PageVerifyCodeReq) returns (PageVerifyCodeRsp) {}
+
+  // 变更收件地址
+  rpc BindReceiptAddress(BindReceiptAddressReq)returns(ReceiptAddress){}
+  //获取收件地址
+  rpc GetReceiptAddress (common.Empty) returns (ReceiptAddress){}
+
+  
+  // 获取谷歌验证秘钥
+  rpc GetTwiceAuthSecret(common.Empty) returns (TwiceAuthSecret) {}
+  // 谷歌验证开启
+  rpc TwiceAuthOpen(TwiceAuthOpenReq) returns (UserInfo) {}
+  // 谷歌验证关闭
+  rpc TwiceAuthClose(TwiceAuthCloseReq) returns (UserInfo) {}
+  // 发送收据
+  rpc SendEmail(SendEmailReq) returns (common.Empty) {}
+
+  // 更新用户实名认证文件
+  rpc UpdateIdentifyDocuments (UpdateIdentifyDocumentsReq) returns (common.Empty) {}
+
+  rpc AddBanks(AddBanksReq) returns (common.Empty) {}
+
+  rpc IdentifyRealID(IdentifyRealIDReq) returns (IdentifyRealIDRsp) {}
+};
+message SendEmailReq {
+   string ApplyNum  = 1;//Hash值
+   string ReceiptImg = 2 ;//收据
+   string ClientEmail = 3; //收件人邮箱
+}
+
+message RoleReq{
+  message Query {
+    string RoleName = 2;
+  };
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+message RoleRsp{
+  int64 Count = 1;
+  repeated RoleInfo Data = 2;
+}
+
+
+message RoleInfo{
+
+  string RoleName = 1;
+  uint32 Level = 2;
+  string Remark = 3;
+  uint64 RoleID = 4;
+  repeated rights.Rights Rights = 5;
+
+}
+
+
+
+//添加变更地址
+message BindReceiptAddressReq{
+  ReceiptAddressType Type = 1; // 添加 or 修改
+  ReceiptAddress ReceiptAddress = 2;
+
+}
+//收件地址
+message ReceiptAddress{
+  string Name = 1;
+  string Mobile = 2;
+  string Area = 3 ;
+  string Address = 4;
+}
+
+
+
+
+
+// 登录
+message LoginReq {
+  ContactType Type = 1;
+  string MobilePrefix = 2; // 手机前缀(86..)
+  string UserName = 3;     // 根据Type,传手机号/邮箱/用户名
+  string Password = 4;
+  string VerifyCode = 5;  // 手机或者短信验证码
+};
+
+message LoginRsp {
+  uint64 UserID = 1;
+  string UserName = 2;
+  string NickName = 3;    // 昵称
+  string MobilePrefix = 4;
+  string Mobile = 5;
+  string Email = 6;
+  string Icon = 7;      // 头像地址
+  bool HasTradePassword = 8; // 是否有交易密码
+  IdentifyStatus IdentifyStatus = 9; // 实名状态
+  string CreatedAt = 10;
+  repeated rights.Rights Rights = 11;  // 权限
+  uint32 RightsLevel = 12; //权限等级
+  uint32 UserType  = 13;
+};
+
+// 注册用户
+message RegistReq {
+  // ContactType Type = 1;
+  string Email = 1;
+  string MobilePrefix = 2;
+  string Mobile = 3;
+  string Password = 4;
+  string MobileVerifyCode = 5;
+  string EmailVerifyCode = 6;
+};
+
+message RegisterRsp {
+  uint64 UserID = 1;
+  string UserName = 2;
+  string NickName = 3;    // 昵称
+  string MobilePrefix = 4;
+  string Mobile = 5;
+  string Email = 6;
+  string Icon = 7;      // 头像地址
+  bool HasTradePassword = 8; // 是否有交易密码
+  IdentifyStatus IdentifyStatus = 9; // 实名状态
+  string CreatedAt = 10;
+  repeated rights.Rights Rights = 11;  // 权限
+  uint32 RightsLevel = 12; //权限等级
+  uint32 UserType  = 13;
+ };
+
+// 获取用户信息
+message GetUserInfoReq {
+  uint64 UserID = 1;
+};
+
+message GetUserRightRsp {
+  repeated rights.Rights Rights = 1;
+}
+
+
+
+// 用户信息
+message UserInfo {
+  uint64 UserID = 1;
+  string UserName = 2;
+  string NickName = 3;    // 昵称
+  string MobilePrefix = 4;
+  string Mobile = 5;
+  string Email = 6;
+  string Icon = 7;    // 头像地址
+  IdentifyType IdentifyType= 8; //证件类型 
+  string IdentifyCode = 9 ; //证件号
+  string CountryCode = 10; //国家编号
+  bool HasTradePassword = 11; // 是否有交易密码
+  IdentifyStatus IdentifyStatus = 12; // 实名状态
+  string CreatedAt = 13;
+  int32 TwiceAuth = 14; // Google验证 1关闭，2开启
+  uint32 RightsLevel = 15; //权限等级
+  uint32 UserType  = 16;
+  UserStatus UserStatus = 17;
+  string RealName = 18;
+  uint64 RoleID = 19 ;
+  RoleInfo RoleInfos = 20;
+  // repeated UserAttachment UserAttachment = 21; 
+  repeated string Images = 21;
+  string BankAccount = 22;
+  string Remark = 23;
+  repeated UserBank Banks = 24;
+};
+
+
+// 用户简介
+message UserBrief {
+  string UserName = 1;
+  string NickName = 2;    // 昵称
+  string Icon = 3;      // 头像地址
+  uint32 UserType  = 4;
+  string Mobile = 5;
+  string MobilePrefix = 6;
+  string Email = 7;
+  UserStatus UserStatus = 8;
+  uint64 UserID = 9;
+};
+
+// 获取图形验证码
+message GetRecaptchaKeyRsp {
+  string Key = 1;
+}
+
+// 发送验证码
+message SendVerifyCodeReq {
+  ContactType Type = 1;
+  string MobilePrefix = 2;
+  string Contact = 3;
+  VerifyCodeType VerifyType = 4;
+  string ImageCode = 5;
+};
+
+message SendVerifyCodeRsp { int64 SendedAt = 1; };
+
+// 检查验证码
+message CheckVerifyCodeReq {
+  ContactType Type = 1;
+  string MobilePrefix = 2;
+  string Contact = 3;
+  VerifyCodeType VerifyType = 4;
+  string VerifyCode = 5;
+};
+
+
+// 重置密码
+message ResetPasswordReq {
+  ContactType Type = 1;
+  string MobilePrefix = 5;
+  string Contact = 2;
+  string NewPassword = 3;
+  string VerifyCode = 4;
+};
+
+// 修改密码
+message ChangePasswordReq {
+  ContactType Type = 1;
+  string OldPassword = 2;
+  string NewPassword = 3;
+  string VerifyCode = 4;
+};
+
+// 设置交易密码
+message SetTradePasswordReq {
+  ContactType Type = 1;
+  string Password = 2;
+  string VerifyCode = 3;
+  uint64 UserID = 4;
+}
+
+// 修改交易密码
+message ChangeTradePasswordReq {
+  ContactType Type = 1;
+  string OldPassword = 2;
+  string NewPassword = 3;
+  string VerifyCode = 4;
+};
+
+// 修改手机
+message ChangeMobileReq {
+  string OldVerifyCode = 1;
+  string NewVerifyCode = 2;
+  string NewMobilePrefix = 3;
+  string NewMobile = 4;
+};
+
+// 绑定手机
+message BindMobileReq {
+  string MobilePrefix = 1;
+  string Mobile = 2;
+  string VerifyCode = 3;
+  string EmailVerifyCode = 4;
+};
+
+// 修改邮箱
+message ChangeEmailReq {
+  string OldVerifyCode = 1;
+  string NewVerifyCode = 2;
+  string NewEmail = 3;
+};
+
+// 绑定邮箱
+message BindEmailReq {
+  string Email = 1;
+  string MobileVerifyCode = 2;
+  string VerifyCode = 3;
+};
+
+// 设置收件地址
+message SetReceiveAddressReq {
+  string ReceiveAddress = 1;
+};
+
+// 修改昵称
+message ChangeNickNameReq {
+  ContactType Type = 1;
+  string NickName = 2;
+  string VerifyCode = 3;
+};
+
+// 修改头像
+message ChangeIconReq {
+  string Icon = 1;
+};
+
+
+// 用户附件
+message UserAttachment {
+  uint64 ID = 1;
+	uint64 RelateID   = 2;
+	uint32 AttachmentType = 3;
+  string URL  = 4;
+  string Name = 5;
+	string CreatedAt  = 6;
+}
+
+// 实名认证
+message Identify {
+	uint64 IdentifyID = 1;
+	uint64 UserID = 2;
+	IdentifyType IdentifyType = 3;
+	string CountryCode = 4;
+	string IdentifyName = 5;
+	string IdentifyCode = 6;
+	IdentifyStatus IdentifyStatus = 7;
+	uint64 DealUserID = 8;
+	string Remark = 9;
+	string CreatedAt = 10;
+	string UpdatedAt = 11;
+  repeated UserAttachment UserAttachments = 12;
+	UserBrief User = 13;
+  string OperatingLine1 = 14;
+  string OperatingLine2 = 15;
+  string OperatingMailingCountry = 16;
+  string OperatingZipCode = 17;
+  string MailingLine1 = 18;
+  string MailingLine2 = 19;
+  string MailingCountry = 20;
+  string MailingZipCode = 21;
+  string DateOfBirth = 22;
+  string BankAccount = 23;
+  string Occupation = 24;
+  string IncomeUSD = 25;
+};
+
+message GetIdentifyRsp {
+	uint64 IdentifyID = 1;
+	uint64 UserID = 2;
+	IdentifyType IdentifyType = 3;
+	string CountryCode = 4;
+	string IdentifyName = 5;
+	string IdentifyCode = 6;
+	IdentifyStatus IdentifyStatus = 7;
+	uint64 DealUserID = 8;
+	string Remark = 9;
+	string CreatedAt = 10;
+	string UpdatedAt = 11;
+  repeated UserAttachment UserAttachments = 12;
+	UserBrief User = 13;
+  string OperatingLine1 = 14;
+  string OperatingLine2 = 15;
+  string OperatingMailingCountry = 16;
+  string OperatingZipCode = 17;
+  string MailingLine1 = 18;
+  string MailingLine2 = 19;
+  string MailingCountry = 20;
+  string MailingZipCode = 21;
+  string DateOfBirth = 22;
+  string BankAccount = 23;
+  uint64 UserType = 24;
+  string Occupation = 25;
+  string IncomeUSD = 26;
+  repeated UserBank Banks = 27;
+  string TransactionID = 28;
+}
+
+message PageIdentifyReq {
+  message Query {
+    uint64 UserID = 1;
+    string CountryCode = 2;
+    string IdentifyName = 3;
+    string IdentifyCode = 4;
+    string MobilePrefx = 5;
+    string Mobile = 6;
+    IdentifyStatus IdentifyStatus = 7;
+    repeated string CreatedAt = 8;
+  };
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageIdentifyRsp {
+  int64 Count = 1;
+  repeated Identify Data = 2;
+}
+
+// 实名认证请求
+message IdentifyReq {
+  message IdentifyImages {
+    string Name = 1;
+    string URL = 2;
+  }
+  IdentifyType IdentifyType = 1;   // (CN)
+  string CountryCode = 2;   // (CN)
+  string IdentifyName = 3;
+  string IdentifyCode = 4;
+  string OperatingLine1 = 5;
+  string OperatingLine2 = 6;
+  string OperatingMailingCountry = 7;
+  string OperatingZipCode = 8;
+  string MailingLine1 = 9;
+  string MailingLine2 = 10;
+  string MailingCountry = 11;
+  string MailingZipCode = 12;
+  repeated IdentifyImages Images = 13;
+  uint32 UserType = 14; // 1 or 3
+  string DateOfBirth = 15;
+  string BankAccount = 16;
+  uint32 Type = 17;
+  string Occupation = 18;
+  string IncomeUSD = 19;
+  repeated UserBank Banks = 20;
+  string TransactionID = 21;
+};
+
+message UpdateIdentifyRemarkReq {
+  uint64 IdentifyID = 1;
+  string Remarks = 2;
+}
+
+message UserBank {
+  uint64 ID = 1;
+  string AccountNumber = 2;
+  UserBankStatus Status = 3;
+  string URL = 4;
+  UserBrief  User = 5;
+  string CreatedAt = 6;
+};
+
+// 修改用户实名
+message UpdateIdentifyReq {
+  uint64 IdentifyID = 1;
+  IdentifyStatus IdentifyStatus = 2;
+  string Remark = 3;
+};
+
+// 检查用户是否存在
+message CheckUserReq {
+  ContactType Type = 1;
+  string MobilePrefix = 2;
+  string Contact = 3;
+};
+
+
+// 查看用户列表
+message PageUserReq {
+  message Query {
+    uint64 UserID = 1;
+    string UserName = 2;
+    string Mobile = 3;
+    string Email = 4;
+    uint32 UserType = 5;
+    repeated uint32 InUserType = 6;
+    repeated string CreatedAt = 7;
+  };
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageUserRsp {
+  int64 Count = 1;
+  repeated UserInfo Data = 2;
+}
+
+message UserReportReq {
+  message Query {
+  uint64 UserID = 1;
+  string UserName = 2;
+  string Mobile = 3;
+  string Email = 4;
+  repeated uint32 InUserType = 5;
+  repeated string CreatedAt = 7;
+  }
+  Query Conditions = 1;
+}
+
+message UserReportRsp {
+  string path = 1;
+}
+
+// 查看用户列表
+message PageMerchantReq {
+  common.PageReq Page = 1;
+}
+message PageMerchantRsp {
+  int64 Count = 1;
+  repeated Merchant Data = 2;
+}
+message Merchant{
+  uint64 UserID =1;
+  string UserName =2;
+  string NickName =3;
+  string RealName =4;
+}
+// 修改用户状态
+message ChangeUserStatusReq{
+  uint64 UserID = 1;
+  UserStatus UserStatus = 2;
+};
+
+// 修改用户类型
+message ChangeUserTypeReq{
+  uint64 UserID = 1;
+  uint32 UserType = 2;
+};
+
+// 修改用户角色
+message ChangeUserRoleReq{
+  uint64 UserID = 1;
+  uint64 RoleID = 2;
+};
+
+// 创建后台用户
+message CreateUserReq {
+  string UserName = 1;
+  string NickName = 2;    // 昵称
+  string MobilePrefix = 3;
+  string Mobile = 4;
+  string Email = 5;
+  string Icon = 6;      // 头像地址
+  uint32 UserType  = 7;
+  UserStatus UserStatus = 8;
+  string Password = 9;
+  uint64 RoleID = 10;
+};
+
+// 创建角色
+message CreateRoleReq {
+  string RoleName = 1;
+  uint32 Level = 2;
+  string Remark = 3;
+  repeated rights.Rights Rights = 4;
+};
+
+//  用户角色
+message RightsInRole {
+  uint64 ID = 1;
+	rights.Rights Right = 3;
+};
+
+// 创建角色
+message UpdateRoleReq {
+  uint64 RoleID = 1;
+  string RoleName = 2;
+  uint32 Level = 3;
+  string Remark = 4;
+  repeated rights.Rights Rights = 5;
+};
+
+// 修改用户信息
+message UpdateUserBriefReq {
+  uint64 UserID = 1;
+  string UserName = 2;
+  string CountryCode = 3;
+  string Mobile = 4;
+  string MobilePrefix = 5;
+  string Email = 6;
+  string NickName = 7;
+  UserStatus UserStatus = 8;
+  uint32 UserType  = 9;
+  uint64 RoleID = 10;
+  string Password = 11;
+  string Remark = 12;
+};
+
+// 修改用户密码
+message UpdateUserPasswordReq {
+  uint64 UserID = 1;
+  string Password = 2;
+  string OldPassword = 3;
+};
+
+// 修改用户交易密码
+message UpdateUserTradePasswordReq {
+  uint64 UserID = 1;
+  string Password = 2;
+};
+
+// 国家码
+message CountryCode {
+  string MobilePrefix = 1;
+	string Code = 2;
+	string EN = 3;
+	string CN = 4;
+};
+
+message GetCountryCodeRsp {
+  repeated CountryCode CountryCode = 1;
+}
+
+message VerifyCode {
+  uint64 ID = 1;
+	uint64 UserID = 2;
+	ContactType ContactType = 3;
+	string Contact = 4;
+	VerifyCodeType VerifyType = 5;
+	string Code = 6;
+	VerifyCodeStatus Status = 7;
+	string ExpiredAt = 8;
+	string CreatedAt = 9;
+};
+
+message PageVerifyCodeReq {
+  message Query {
+    string Contact = 1;
+    ContactType ContactType = 2;
+    repeated string CreatedAt = 3;
+  };
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageVerifyCodeRsp {
+  int64 Count = 1;
+  repeated VerifyCode Data = 2;
+}
+
+message TwiceAuthSecret { string Secret = 1; }
+
+message TwiceAuthOpenReq {
+  string Secret = 1; // 秘钥
+  uint32 Password = 2; // pwd
+}
+
+message TwiceAuthCloseReq { uint32 Password = 1; }
+
+message UpdateIdentifyDocumentsReq {
+  message IdentifyImages {
+    string Name = 1;
+    string URL = 2;
+  }
+  repeated IdentifyImages images = 1;
+  uint64 RelateID = 2;
+  uint64 UserID = 3;
+}
+
+
+message AddBanksReq {
+  repeated UserBank Banks = 1;
+}
+
+message IdentifyRealIDReq {
+  string DocType = 1;
+  string CallbackURL = 2;
+}
+
+message IdentifyRealIDRsp {
+  string TransactionID = 1;
+  string URL = 2;
+}

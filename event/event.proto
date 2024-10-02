@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package event;
+
+option go_package = "gitlab.bull-b.com/aua/aua-proto/event";
+import "event/enum.proto";
+import "event/services.proto";
+import "rights/rights.proto";
+import "wallet/enum.proto";
+
+enum Topic {
+    System = 0;
+    Otc = 1;
+    GwUser = 2;
+    StateUser = 3;
+    SystemNotice = 4;
+    UserUpdate = 5;
+    ChainNotice = 7; // 链上转账成功
+}
+
+// 链上转账记录
+message ChainEvent {
+    wallet.TransferType TransferType = 1;  // memo
+    uint64 Amount = 2; // 数量*10000
+    uint64 ChainRecordID = 3; // 链上记录ID
+    uint64 RelateID = 4; // 关联ID
+}
+
+message SystemEvent {
+    enum EventType {
+        PermissionRequest = 0;
+        PermissionUpdate = 1;
+    };
+    EventType Type = 1;
+    oneof Data {
+        PermissionMap Permission = 2;
+    }
+}
+
+message GwUserEvent {
+    enum EventType {
+        UserLogout = 0;
+        UserSync   = 1;
+    };
+    EventType Type = 1;
+    oneof Data {
+        LogoutMsg Logout = 2;
+        GWUsers GWUsers = 3;
+    }
+}
+
+message GWUsers {
+    string Gateway = 1;
+    repeated Session Sessions = 2;
+}
+
+message StateUserEvent {
+    enum EventType {
+        Duplicate = 0;
+        StateUserUpdate = 1;
+    };
+    EventType Type = 1;
+    oneof Data {
+        LogoutMsg Logout = 2;
+        UserUpdateEvent Event = 3;
+    }
+}
+
+message SystemNoticeEvent {
+};
+
+message UserUpdateEvent {
+    uint64 UserID = 1;
+    bool Kick = 2;
+    string UserName = 3;
+    string MobilePrefix = 4;
+    string Mobile = 5;
+    string Email = 6;
+    uint32 UserType = 7;
+    repeated rights.Rights Rights = 8;  // 权限
+}
+
+message MapFieldEntry {
+    string Key = 1;
+    string Value = 2;
+}
+
+message PermissionMap {
+    repeated MapFieldEntry Entry = 1;
+}
+
+message LogoutMsg {
+    uint64 UserID = 1;
+    string CookieID = 2;
+	string SessionID = 3;
+    string Gateway = 4;
+    LogoutType Type = 5;
+}

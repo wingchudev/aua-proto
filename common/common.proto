@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package common;
+
+option go_package = "gitlab.bull-b.com/aua/aua-proto/common";
+
+message PageReq {
+  int64 PageIndex = 1;
+  int64 PageSize = 2;
+};
+
+message RespBody {
+  bool Ret = 1;
+  int32 Code = 2;
+  string Error = 3;
+  string Data = 4;
+}
+
+message Empty {}
+
+message IDs { repeated uint64 IDs = 1; }

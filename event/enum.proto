@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package event;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/event";
+
+enum LogoutType {
+    Disconnect = 0;
+    UserLogout = 1;
+    Duplicate  = 2;
+    Kick       = 3;
+}

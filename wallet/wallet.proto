@@ -1,0 +1,160 @@
+syntax = "proto3";
+
+package wallet;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/wallet";
+import "common/common.proto";
+import "wallet/enum.proto";
+import "common/enum.proto";
+import "user/enum.proto";
+import "user/user.proto";
+
+service Wallet {
+    //  检查地址
+    rpc CheckAddress(CheckAddressReq) returns (common.Empty);
+    //  获取转账地址
+    rpc GetTransferAddress(GetTransferAddressReq) returns (GetTransferAddressRsp);
+    //  请求发币
+    rpc CreateIssueChainRecord(CreateIssueChainRecordReq) returns (CreateIssueChainRecordRsp);
+    //  请求销币
+    rpc CreateBurnChainRecord(CreateBurnChainRecordReq) returns (CreateBurnChainRecordRsp);
+    // 获取预期分红列表
+    rpc FindExpectedProfit(PageExpectedProfitReq) returns (PageExpectedProfitResp);
+    // 签名
+    rpc SignChainRecord(SignedChainRecordReq) returns (common.Empty);
+    // 签名
+    rpc SignIssueChainRecord(SignedChainRecordReq) returns (common.Empty);
+    // 签名
+    rpc SignRetireChainRecord(SignedChainRecordReq) returns (common.Empty);
+    // 获取授权管理列表
+    rpc PageChainRecord(PageChainRecordReq) returns (PageChainRecordResp);
+    // 获取授权管理列表
+    rpc PageIssueChainRecord(PageChainRecordReq) returns (PageChainRecordResp);
+    // 获取授权管理列表
+    rpc PageRetireChainRecord(PageChainRecordReq) returns (PageChainRecordResp);
+    // 獲取已發幣數量
+    rpc GetSupply(GetSupplyReq) returns (GetSupplyRsp);
+    // 獲取帳號擁有量
+    rpc GetAccountBalance(GetAccountBalanceReq) returns (GetAccountBalanceRsp);
+}
+
+message SignedChainRecordReq {
+    uint64 ChainRecordID = 1;
+    string SignedTransaction = 2;
+}
+
+// 检查链上地址请求
+message CheckAddressReq {
+  ChainType ChainType = 1; // 链类型
+  string Address = 2;  // 地址
+}
+
+message GetTransferAddressReq {
+  ChainType ChainType = 1; // 链类型
+  TransferType TransferType = 2;  // 转账类型
+
+}
+
+message CreateIssueChainRecordReq {
+  ChainType ChainType = 1; // 链类型
+  uint64 Amount = 2; // 数量
+  uint64 RelateID = 3; // 关联ID
+  string To = 4; // 发币地址
+  IssueType IssueType = 5; // 发币类型
+}
+
+message CreateIssueChainRecordRsp {
+  uint64 ChainRecordID = 1; // 记录ID
+}
+
+message CreateBurnChainRecordReq {
+  uint64 ChainRecordID = 1; // 关联ID
+  string SignedTransaction = 2;
+}
+
+message CreateBurnChainRecordRsp {
+  uint64 ChainRecordID = 1; // 记录ID
+}
+
+message GetTransferAddressRsp {
+  string Address = 1; // 转账地址
+}
+
+
+// 获取总收益时，合约和日期不用填
+message PageExpectedProfitReq {
+    message Query {
+        uint64 ContractID = 1;
+        string Date = 2;
+    }
+    common.PageReq Page = 1;
+    Query Conditions = 2;
+}
+
+message PageExpectedProfitResp {
+    uint64 Count = 1;
+    uint64 TotalAmount = 2;
+    repeated ProfitRecord Data = 3;
+}
+
+message ProfitRecord {
+    uint64 ContractID = 1;
+    string Date = 2;
+    uint64 Amount = 3;
+}
+
+
+message PageChainRecordReq {
+    common.PageReq Page = 1;
+    message Query {
+        ChainRecordStatus Status = 1;
+        common.BusinessType RelatedType = 2;
+    }
+    Query Conditions = 2;
+    bool Report = 3;
+}
+
+message PageChainRecordResp {
+    uint64 Count = 1;
+    repeated ChainRecord Data = 2;
+    string ReportUrl = 3;
+}
+
+message ChainRecord {
+    uint64 ChainRecordID = 1;
+    string Symbol = 2;
+    string BlockChain = 3;
+    string From = 4;
+    string To = 5;
+    uint64 Amount = 6;
+    string Memo = 7;
+    ChainRecordStatus Status = 8;
+    uint64 RelatedID = 9;
+    common.BusinessType RelatedType = 10;
+    string TransactionID = 11;
+    uint64 UserID = 12;
+    UserWalletInfo User = 13;
+    uint64 ReceivedAmount = 14;
+}
+
+message UserWalletInfo {
+    uint64 UserID = 1;
+    string RealName = 2;
+}
+
+message GetSupplyReq {
+  string Account = 1;
+  string Symbol = 2;
+}
+
+message GetSupplyRsp {
+  uint64 Supply = 1;
+  string Symbol = 2;
+}
+
+message GetAccountBalanceReq {
+  string Account = 1;
+}
+
+message GetAccountBalanceRsp {
+  string Quantity = 1;
+}

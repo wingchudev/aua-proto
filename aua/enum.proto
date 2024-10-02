@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package aua;
+
+option go_package = "gitlab.bull-b.com/aua/aua-proto/aua";
+
+//Contract-status 合约状态
+enum ContractStatus {
+    ContractStatus_Invalid = 0 ; //无效
+    InIssuing = 1;// 发放中
+    Executed = 2;  //已生效
+    IncomePeriod = 3;  //收益期
+    IncomeEarned = 4;  //收益到账
+    WaitingDelivery = 5; //待交付
+    Delivered = 6; //已交付
+}
+
+enum ContractBurnStatus {
+    ContractBurnStatus_Invalid = 0 ; //无效
+    NotDestroyed = 1 ;// 未销毁
+    HadDestroyed = 2 ;// 已销毁
+}
+
+enum ContractType {
+    ContractType_Invalid = 0 ; //无效
+    Normal = 1 ;// 正常合约
+    Virtual = 2 ;// 虚拟合约
+}
+
+// Application-status 申请状态
+enum ApplicationStatus {
+    Application_NoDocument = 0 ;//待上传文件 //驗證中
+    Application_Verifying = 1; //审核中 //待消幣
+    Application_Issue = 2; //发币中 //待提取
+    Application_Approved = 3; //成功 // 成功
+    Application_Rejected = 4; //失败 //失败
+}
+ 
+// Application-type 申请类型
+enum ApplicationType {
+    ApplicationType_Invalid = 0 ;//无效
+    Application_Deposit = 1; //申请发币
+    Application_Withdraw_Cash = 2; //申请提取
+    Application_Withdraw_Gold = 3; //申请提取
+}
+
+
+
+// Receipt-status  收据状态
+enum ReceiptStatus {
+    ReceiptStatus_Invalid = 0 ;//无效
+    WaitClientIssue = 1 ; //客户待发币
+    AlreadyIssued = 2 ;// 客户已发币
+    Obsoleted= 3; //已废弃
+};
+
+enum ReceiptType{
+    ReceiptType_Invalid = 0 ;//无效
+    NormalReceipt = 1 ; //正常凭证
+    EmptyReceipt =  2; //空凭证
+}
+
+//COntract Operation 合约操作
+enum ContractOperation {
+    ContractOperation_Invalid = 0 ;//无效
+    ApplyReplenishment = 1 ;//申请补款
+    ConfirmReplenishment = 2 ; //同意补款
+    ApplyDeliver = 3 ;  //拒绝交割
+    ConfirmDelivery = 4 ; //同意交割
+}
+
+//IncomeStatus 收益状态
+enum IncomeStatus {
+    IncomeStatus_Invalid = 0 ;//无效
+    Imcomed = 1 ;//收益发放
+    BreakContract = 2 ; //违约无收益
+    ApplyContract = 3 ; //兑换无收益
+    
+
+}
+
+enum ProgressType {
+    ProgressType_Invalid = 0;  // 无效
+    Extract = 1; // 提取
+    Exchange = 2; // 兑换
+}

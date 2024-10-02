@@ -1,0 +1,431 @@
+syntax = "proto3";
+
+package cms;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/cms";
+import "common/common.proto";
+import "user/enum.proto";
+import "user/user.proto";
+
+enum Status {
+  StatusUnknow = 0;
+  Enable = 1;  // 启用
+  Disable = 2; // 停用
+}
+enum Type {
+  TypeUnknow = 0;
+  TypeArticle = 1;
+  TypeNotice = 2;
+}
+
+enum Lang {
+  LangUnknow = 0;
+  EN = 1;
+  CN = 2;
+}
+
+message Article {
+  uint64 ArticleID = 1;
+  uint64 CategoryID = 2;
+  string Category = 3;
+  string Title = 4;
+  string Content = 5;
+  Status Status = 6;
+  Lang Language = 7;
+  uint64 RelateID = 8;
+  uint32 Sort = 9;
+  string CreatedAt = 10;
+  string UpdatedAt = 11;
+}
+
+message PageArticleReq {
+  message Query {
+    uint64 RelateID = 1;
+    uint64 CategoryID = 2;
+    Lang Language = 3;
+    Status Status = 4;
+    string Title = 5;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageArticleRsp {
+  int64 Count = 1;
+  repeated Article Data = 2;
+}
+
+message GetArticleReq {
+  uint64 RelateID = 1;
+  Lang Language = 2;
+}
+
+message Category {
+  uint64 CategoryID = 1;
+  Type Type = 2;
+  string Name = 3;
+  Status Status = 4;
+  Lang Language = 5;
+  uint64 RelateID = 6;
+  uint32 Sort = 7;
+  string CreatedAt = 8;
+  string UpdatedAt = 9;
+  repeated Article Articles = 10;
+  repeated Notice Notices = 11;
+}
+
+message PageCategoryReq {
+  message Query {
+    uint64 RelateID = 1;
+    Type Type = 2;
+    Lang Language = 3;
+    Status Status = 4;
+    string Name = 5;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageCategoryRsp {
+  int64 Count = 1;
+  repeated Category Data = 2;
+}
+
+message CategoryListReq {
+  common.PageReq Page = 1; //分类下文章/公告的分页
+  Type Type = 2;
+  Lang Language = 3;
+}
+
+message CategoryListRsq { repeated Category Data = 1; }
+
+message Banner {
+  uint64 BannerID = 1;
+  string Title = 2;
+  string ImgURL = 3;
+  string Link = 4;
+  Status Status = 5;
+  Lang Language = 6;
+  uint64 RelateID = 7;
+  uint32 Sort = 8;
+  string CreatedAt = 9;
+  string UpdatedAt = 10;
+}
+
+message PageBannerReq {
+  message Query {
+    uint64 RelateID = 1;
+    Lang Language = 2;
+    Status Status = 3;
+    string Title = 4;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageBannerRsp {
+  int64 Count = 1;
+  repeated Banner Data = 2;
+}
+
+message Notice {
+  uint64 NoticeID = 1;
+  uint64 CategoryID = 2;
+  string Category = 3;
+  string Title = 4;
+  string Content = 5;
+  Status Status = 6;
+  Lang Language = 7;
+  uint64 RelateID = 8;
+  uint32 Sort = 9;
+  string CreatedAt = 10;
+  string UpdatedAt = 11;
+}
+
+message PageNoticeReq {
+  message Query {
+    uint64 RelateID = 1;
+    string Title = 2;
+    Lang Language = 3;
+    Status Status = 4;
+    uint64 CategoryID = 5;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageNoticeRsp {
+  int64 Count = 1;
+  repeated Notice Data = 2;
+}
+
+message GetNoticeReq {
+  Lang Language = 1;
+  uint64 RelateID = 2;
+}
+
+message PageAPILogReq {
+  message Query {
+    uint64 UserID = 1;
+    string API = 2;
+    string UserName = 3;
+    Status Status = 4;
+    string CreatedAt = 5;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message APILog {
+  uint32 ID = 1;
+  uint32 Level = 2;
+  uint32 Type = 3;
+  uint32 SubType = 4;
+  string CreatedAt = 6;
+  string API = 7;
+  double ElapsedTime = 8;
+  uint32 Status = 9;
+  uint64 UserID = 10;
+  string UserName = 11;
+  string SourceIP = 12;
+  string DestIP = 13;
+  string Country = 14;
+  string RequestContent = 15;
+  string ResponseContent = 16;
+}
+
+message PageAPILogRsp {
+  int64 Count = 1;
+  repeated APILog Data = 2;
+}
+
+message Currency {
+  uint64 CurrencyID = 1;
+  string Currency = 2;
+  float DepositRate = 3;
+  float WithdrawRate = 4;
+  string Symbol = 5;
+}
+
+message PageCurrencyReq {
+  message Query {
+    uint64 CurrencyID = 1;
+    string Currency = 2;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageCurrencyRsp {
+  uint64 Count = 1;
+  repeated Currency Data =2;
+}
+
+message Bank {
+  uint64 BankID = 1;
+  string BankName = 2;
+  string BankNumber = 3;
+  uint64 CurrencyID = 4;
+  string CreatedAt = 5;
+  string UpdatedAt = 6;
+  Currency Currency = 7;
+}
+
+message PageBankReq {
+  message Query {
+    uint64 BankID = 1;
+    string BankName = 2;
+    string BnakNumber = 3;
+    uint64 CurrencyID = 4;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageBankRsp {
+  uint64 Count = 1;
+  repeated Bank Data = 2;
+}
+
+message Store {
+  uint64 StoreID = 1;
+  string Name = 2;
+  string Location = 3;
+  string Contact = 4;
+  string CreatedAt = 5;
+  string UpdatedAt = 6;
+}
+
+message PageStoreReq {
+  message Query {
+    uint64 StoreID = 1;
+    string Name = 2;
+    string Location = 3;
+    string Contact = 4;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageStoreRsp {
+  uint64 Count = 1;
+  repeated Store Data = 2;
+}
+
+message Vault {
+  uint64 VaultID = 1;
+  string Location = 2;
+  string CreatedAt = 3;
+  string UpdatedAt = 4;
+}
+
+message PageVaultReq {
+  message Query {
+    uint64 VaultID = 1;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageVaultRsp {
+  uint64 Count = 1;
+  repeated Vault Data =2;
+}
+
+message GoldAttachment {
+  uint64 ID = 1;
+  uint64 GoldID = 2;
+  uint64 AttachmentType = 3;
+  string URL = 4;
+  string CreatedAt = 5;
+  string UpdatedAt = 6;
+}
+
+message Gold {
+  uint64 GoldID = 1;
+  float Weight = 2;
+  uint64 VaultID = 3;
+  repeated string Attachments = 4;
+  repeated GoldAttachment GoldAttachments = 5;
+  string SerialNumber = 6;
+  Status Status = 7;
+  string Name = 8;
+  string CreatedAt = 9;
+}
+
+message PageGoldReq {
+  message Query {
+    uint64 GoldID = 1;
+    uint64 VaultID = 2;
+    string SerialNumber = 3;
+    uint64 Status = 4;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageGoldRsp {
+  uint64 Count = 1;
+  repeated Gold Data = 2;
+}
+
+message UpdateBankCardReq {
+  uint64 ID = 1;
+  user.UserBankStatus status = 2;
+}
+
+message PageBankCardReq {
+  message Query {
+    uint64 ID = 1;
+    uint64 Status = 2;
+    uint64 UserID = 3;
+  }
+  common.PageReq Page = 1;
+  Query Conditions = 2;
+}
+
+message PageBankCardRsp {
+  uint64 Count = 1;
+  repeated user.UserBank Data = 2;
+}
+
+service CMS {
+  // 文章分页
+  rpc PageArticle(PageArticleReq) returns (PageArticleRsp);
+  // 获取文章详情
+  rpc GetArticle(GetArticleReq) returns (Article);
+  // 创建文章
+  rpc CreateArticle(Article) returns (common.Empty);
+  // 更新文章
+  rpc UpdateArticle(Article) returns (common.Empty);
+  // 删除文章
+  rpc DeleteArticles(common.IDs) returns (common.Empty);
+
+  // 文章分类分页
+  rpc PageCategory(PageCategoryReq) returns (PageCategoryRsp);
+  // 创建分类
+  rpc CreateCategory(Category) returns (common.Empty);
+  // 更新分类
+  rpc UpdateCategory(Category) returns (common.Empty);
+  // 删除分类
+  rpc DeleteCategorys(common.IDs) returns (common.Empty);
+  // 获取所有分类
+  rpc GetCategoryList(CategoryListReq) returns (CategoryListRsq);
+
+  // banner分页
+  rpc PageBanner(PageBannerReq) returns (PageBannerRsp);
+  // 创建banner
+  rpc CreateBanner(Banner) returns (common.Empty);
+  // 更新banner
+  rpc UpdateBanner(Banner) returns (common.Empty);
+  // 删除banner
+  rpc DeleteBanners(common.IDs) returns (common.Empty);
+
+  // 公告分页
+  rpc PageNotice(PageNoticeReq) returns (PageNoticeRsp);
+  // 获取公告详情
+  rpc GetNotice(GetNoticeReq) returns (Notice);
+  // 创建公告
+  rpc CreateNotice(Notice) returns (common.Empty);
+  // 更新公告
+  rpc UpdateNotice(Notice) returns (common.Empty);
+  // 删除公告
+  rpc DeleteNotices(common.IDs) returns (common.Empty);
+  //  查看API Log
+  rpc PageAPILog(PageAPILogReq) returns (PageAPILogRsp) {};
+
+  // 貨幣分頁
+  rpc PageCurrency(PageCurrencyReq) returns (PageCurrencyRsp);
+  // 創建貨幣
+  rpc CreateCurrency(Currency) returns (Currency);
+  // 更新貨幣
+  rpc UpdateCurrency(Currency) returns (Currency);
+  // 刪除貨幣
+  rpc DeleteCurrency(common.IDs) returns (common.Empty);
+
+  // 銀行
+  rpc PageBank(PageBankReq) returns (PageBankRsp);
+  rpc CreateBank(Bank) returns (common.Empty);
+  rpc UpdateBank(Bank) returns (common.Empty);
+  rpc DeleteBank(common.IDs) returns (common.Empty);
+
+  // 金鋪
+  rpc PageStore(PageStoreReq) returns (PageStoreRsp);
+  rpc CreateStore(Store) returns (common.Empty);
+  rpc UpdateStore(Store) returns (common.Empty);
+  rpc DeleteStore(common.IDs) returns (common.Empty);
+
+  // 金庫
+  rpc CreateVault(Vault) returns (common.Empty);
+  rpc PageVault(PageVaultReq) returns (PageVaultRsp);
+  rpc UpdateVault(Vault) returns (common.Empty);
+  rpc DeleteVault(common.IDs) returns (common.Empty);
+
+  // 金條
+  rpc CreateGold(Gold) returns (common.Empty);
+  rpc PageGold(PageGoldReq) returns (PageGoldRsp);
+  rpc UpdateGold(Gold) returns (common.Empty);
+  rpc DeleteGold(common.IDs) returns (common.Empty);
+
+  rpc UpdateBankCard(UpdateBankCardReq) returns (common.Empty);
+  rpc PageBankCard(PageBankCardReq) returns (PageBankCardRsp);
+}

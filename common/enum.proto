@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package common;
+option go_package = "gitlab.bull-b.com/aua/aua-proto/common";
+
+//用户类型
+enum UserType {
+    UserType_Invalid = 0;//无效
+    DefaultUserType = 1;//客户
+    MerchantUserType = 2;//金商
+    OrganizationUserType = 3;//機構
+    BackendUserType  = 101;//后台
+    OperatorUserType  = 102;//运营
+}
+
+enum BusinessType  {
+    Invalid = 0;
+    Issue = 1;
+    Refund = 2;
+    Dividend = 3;
+    Burn = 4;
+    Transfer = 5;
+}
